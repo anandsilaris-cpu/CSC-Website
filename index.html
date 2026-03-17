@@ -306,3 +306,73 @@ function sendWhatsApp() {
 }
 </script>
 ```
+```html
+<!-- ADMIN LOGIN BUTTON -->
+<div style="position:fixed; top:10px; right:10px;">
+<button onclick="showLogin()">Admin Login</button>
+</div>
+
+<!-- LOGIN BOX -->
+<div id="loginBox" style="display:none; position:fixed; top:30%; left:40%; background:white; padding:20px;">
+<h3>Admin Login</h3>
+<input type="password" id="adminPass" placeholder="Enter Password">
+<button onclick="login()">Login</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel" style="display:none; padding:20px;">
+<h2>Customer Appointments</h2>
+<ul id="dataList"></ul>
+</div>
+
+<script>
+
+// Save Appointment
+function sendWhatsApp() {
+    let name = document.getElementById("name").value;
+    let mobile = document.getElementById("mobile").value;
+    let service = document.getElementById("service").value;
+
+    let data = {name, mobile, service};
+
+    let allData = JSON.parse(localStorage.getItem("cscData")) || [];
+    allData.push(data);
+    localStorage.setItem("cscData", JSON.stringify(allData));
+
+    let text = "Name: " + name + "%0AMobile: " + mobile + "%0AService: " + service;
+    window.open("https://wa.me/919205042347?text=" + text, "_blank");
+}
+
+// Show Login
+function showLogin(){
+    document.getElementById("loginBox").style.display="block";
+}
+
+// Login Check
+function login(){
+    let pass = document.getElementById("adminPass").value;
+
+    if(pass === "1234"){  // password change kar sakte ho
+        document.getElementById("loginBox").style.display="none";
+        document.getElementById("adminPanel").style.display="block";
+        loadData();
+    } else {
+        alert("Wrong Password");
+    }
+}
+
+// Load Data
+function loadData(){
+    let allData = JSON.parse(localStorage.getItem("cscData")) || [];
+    let list = document.getElementById("dataList");
+    list.innerHTML = "";
+
+    allData.forEach((item)=>{
+        let li = document.createElement("li");
+        li.innerText = item.name + " | " + item.mobile + " | " + item.service;
+        list.appendChild(li);
+    });
+}
+
+</script>
+```
